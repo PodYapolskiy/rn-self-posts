@@ -8,7 +8,7 @@ import { bootstrap } from './src/bootstrap'
 export default function App() {
   const [isReady, setIsReady] = useState(false)
 
-  if (isReady) {
+  if (!isReady) {
     return (
       <AppLoading
         startAsync={bootstrap}
