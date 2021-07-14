@@ -17,5 +17,5 @@ export default function App() {
       />
     )
   }
-  return <AppNavigation/>
+  return <AppNavigation />
 }

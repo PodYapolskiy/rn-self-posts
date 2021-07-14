@@ -9,6 +9,10 @@ export const MainScreen = ({}) => {
   )
 }
 
+MainScreen.navigationOptions = {
+  headerTitle: 'Мой блог',
+}
+
 const styles = StyleSheet.create({
   center: {
     flex: 1,
