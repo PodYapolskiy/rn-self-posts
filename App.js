@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import AppLoading from 'expo-app-loading'
-import { StyleSheet, Text, View } from 'react-native'
 
 import { AppNavigation } from './src/navigation/AppNavigation'
 import { bootstrap } from './src/bootstrap'
