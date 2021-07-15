@@ -6,7 +6,7 @@ import { DATA } from '../data'
 
 export const MainScreen = ({ navigation }) => {
   const openPostHandler = post => {
-    navigation.navigate('Post', { postId: post.id, date: post.date })
+    navigation.navigate('Post', { postId: post.id, date: post.date }) // Можем передавать объект с данными вторым аргументом
   }
 
   return (
