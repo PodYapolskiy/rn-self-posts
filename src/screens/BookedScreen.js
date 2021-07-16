@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, Platform } from 'react-native'
+import { StyleSheet, Text, Platform } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
-import { Post } from '../components/Post'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
+import { PostList } from '../components/PostList'
 import { DATA } from '../data'
 import { THEME } from '../theme'
 
@@ -17,15 +17,9 @@ export const BookedScreen = ({ navigation }) => {
     })
   }
 
-  return (
-    <View style={styles.wrapper}>
-      <FlatList
-        data={DATA.filter(post => post.booked)}
-        keyExtractor={post => post.id.toString()}
-        renderItem={({ item }) => <Post post={item} onOpen={openPostHandler} />}
-      />
-    </View>
-  )
+  const data = DATA.filter(post => post.booked)
+
+  return <PostList data={data} onOpen={openPostHandler} />
 }
 
 BookedScreen.navigationOptions = () => {
@@ -44,9 +38,6 @@ BookedScreen.navigationOptions = () => {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    padding: 10,
-  },
   headerTitle: {
     fontFamily: 'open-bold',
     fontSize: 22,
