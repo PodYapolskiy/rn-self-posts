@@ -9,7 +9,12 @@ import { THEME } from '../theme'
 
 export const MainScreen = ({ navigation }) => {
   const openPostHandler = post => {
-    navigation.navigate('Post', { postId: post.id, date: post.date }) // Можем передавать объект с данными вторым аргументом
+    navigation.navigate('Post', {
+      // Можем передавать объект с данными вторым аргументом
+      postId: post.id,
+      date: post.date,
+      booked: post.booked, // Передаём сразу же, чтобы избежать то, что будет при useEffect()
+    })
   }
 
   return (
@@ -31,6 +36,15 @@ MainScreen.navigationOptions = {
         title='Take photo'
         iconName='ios-camera'
         onPress={() => console.log('Take photo')}
+      />
+    </HeaderButtons>
+  ),
+  headerLeft: () => (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title='Toggle Drawer'
+        iconName='ios-menu'
+        onPress={() => console.log('Toggle Drawer')}
       />
     </HeaderButtons>
   ),
