@@ -18,10 +18,6 @@ export const PostScreen = ({ navigation }) => {
   const postId = navigation.getParam('postId') // Достаём переданную информацию
   const post = DATA.find(p => p.id === postId) // Ищем нужный пост
 
-  // useEffect(() => { // Выполняется после рендера компонента, не выгодно, потому что при переходе с поста, где звёздочка была отмечена, на другой, где не была, происходит маленькая, но всё же задержка
-  //   navigation.setParams({ booked: post.booked })
-  // }, [])
-
   const removeHandler = () => {
     Alert.alert(
       'Удаление поста',

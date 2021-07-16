@@ -37,6 +37,7 @@ const BookedNavigator = createStackNavigator(
     Post: PostScreen,
   },
   {
+    initialRouteKey: 'Booked',
     // Общие стили для скринов
     defaultNavigationOptions: {
       headerStyle: {
