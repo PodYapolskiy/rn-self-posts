@@ -1,7 +1,10 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+
 import { Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -10,70 +13,117 @@ import { PostScreen } from '../screens/PostScreen'
 import { BookedScreen } from '../screens/BookedScreen'
 import { THEME } from '../theme'
 
-const PostNavigator = createStackNavigator(
-  {
-    Main: MainScreen,
-    Post: {
-      screen: PostScreen,
-    },
+// https://reactnavigation.org/docs/hello-react-navigation
+
+const screenOptions = {
+  // Общая View'ха
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
   },
-  {
-    initialRouteKey: 'Main', // Экран по умолчанию
-    // Общие стили для скринов
-    defaultNavigationOptions: {
-      headerStyle: {
-        // Стиль автоматически созданного хэдера
-        backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-      },
-
-      headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-    },
-  }
-)
-
-const BookedNavigator = createStackNavigator(
-  {
-    Booked: BookedScreen,
-    Post: PostScreen,
+  // Стиль общий для заголовка и кнопки назад
+  headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+  // Текстовые стили
+  headerTitleStyle: {
+    fontFamily: 'open-bold',
   },
-  {
-    initialRouteKey: 'Booked',
-    // Общие стили для скринов
-    defaultNavigationOptions: {
-      headerStyle: {
-        // Стиль автоматически созданного хэдера
-        backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-      },
+}
 
-      headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-    },
-  }
+// Стек между главным скрином и скрином поста
+const PostStack = createStackNavigator()
+
+const PostStackScreen = ({ navigation }) => {
+  return (
+    <PostStack.Navigator screenOptions={screenOptions}>
+      <PostStack.Screen
+        name='Main'
+        component={MainScreen}
+        options={{
+          title: 'Мой блог',
+        }}
+      />
+      <PostStack.Screen
+        name='Post'
+        component={PostScreen}
+        options={({ route }) => ({
+          title: `Пост от ${new Date(route.params.date).toLocaleDateString()}`,
+        })}
+      />
+    </PostStack.Navigator>
+  )
+}
+
+// Стек между скрином избранных и скрином поста
+const BookedStack = createStackNavigator()
+
+const BookedStackScreen = ({ navigation }) => {
+  return (
+    <BookedStack.Navigator screenOptions={screenOptions}>
+      <BookedStack.Screen
+        name='Booked'
+        component={BookedScreen}
+        options={{
+          title: 'Избранное',
+        }}
+      />
+      <BookedStack.Screen
+        name='Post'
+        component={PostScreen}
+        options={({ route }) => ({
+          title: `Пост от ${new Date(route.params.date).toLocaleDateString()}`,
+        })}
+      />
+    </BookedStack.Navigator>
+  )
+}
+
+// Нижняя навигация, стиль которой зависит от платформы.
+// Связывает PostStack и BookedStack
+const BookedBottomTab =
+  Platform.OS === 'android'
+    ? createMaterialBottomTabNavigator()
+    : createBottomTabNavigator()
+
+export const AppNavigation = props => (
+  <NavigationContainer>
+    <BookedBottomTab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName
+
+          if (route.name === 'Post') {
+            iconName = 'ios-albums'
+          } else {
+            iconName = 'ios-star'
+          }
+
+          return <Ionicons name={iconName} size={22} color={color} />
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: THEME.MAIN_COLOR,
+        inactiveTintColor: 'gray',
+      }}
+      shifting={true} // Иконки выскакивают и появляется текст при нажатии
+      barStyle={{
+        backgroundColor: THEME.MAIN_COLOR,
+      }}
+    >
+      <BookedBottomTab.Screen
+        name='Post'
+        component={PostStackScreen}
+        options={{
+          title: 'Мой блог',
+          tabBarLabel: 'Все',
+        }}
+      />
+      <BookedBottomTab.Screen
+        name='Booked'
+        component={BookedStackScreen}
+        options={{
+          title: 'Мой блог',
+          tabBarLabel: 'Избранное',
+        }}
+      />
+    </BookedBottomTab.Navigator>
+  </NavigationContainer>
 )
-
-const BottomNavigator = createBottomTabNavigator(
-  {
-    Post: {
-      screen: PostNavigator,
-      navigationOptions: {
-        tabBarIcon: info => (
-          <Ionicons name='ios-albums' size={25} color={info.tintColor} />
-        ),
-      },
-    },
-    Booked: {
-      screen: BookedNavigator,
-      navigationOptions: {
-        tabBarIcon: info => (
-          <Ionicons name='ios-star' size={25} color={info.tintColor} />
-        ),
-      },
-    },
-  },
-  {
-    tabBarOptions: {
-      activeTintColor: THEME.MAIN_COLOR, // Цвет текта на нижнем навбаре
-    },
-  }
-)
-
-export const AppNavigation = createAppContainer(BottomNavigator)

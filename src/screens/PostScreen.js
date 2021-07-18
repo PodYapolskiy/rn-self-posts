@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -14,8 +14,9 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { DATA } from '../data'
 import { THEME } from '../theme'
 
-export const PostScreen = ({ navigation }) => {
-  const postId = navigation.getParam('postId') // Достаём переданную информацию
+export const PostScreen = ({ navigation, route }) => {
+  const { postId, date, booked } = route.params
+  const iconName = booked ? 'ios-star' : 'ios-star-outline'
   const post = DATA.find(p => p.id === postId) // Ищем нужный пост
 
   const removeHandler = () => {
@@ -37,6 +38,20 @@ export const PostScreen = ({ navigation }) => {
     )
   }
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+          <Item
+            title='Take'
+            iconName={iconName}
+            onPress={() => console.log('Take')}
+          />
+        </HeaderButtons>
+      ),
+    })
+  })
+
   return (
     <ScrollView>
       <Image source={{ uri: post.img }} style={styles.image} />
@@ -52,31 +67,6 @@ export const PostScreen = ({ navigation }) => {
   )
 }
 
-PostScreen.navigationOptions = ({ navigation }) => {
-  // Динамическое изменение
-  const date = navigation.getParam('date')
-  const booked = navigation.getParam('booked')
-  const iconName = booked ? 'ios-star' : 'ios-star-outline'
-
-  return {
-    // headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
-    headerTitle: () => (
-      <Text style={styles.headerTitle}>
-        Пост от {new Date(date).toLocaleDateString()}
-      </Text>
-    ),
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-        <Item
-          title='Take'
-          iconName={iconName}
-          onPress={() => console.log('Take')}
-        />
-      </HeaderButtons>
-    ),
-  }
-}
-
 const styles = StyleSheet.create({
   image: {
     width: '100%',
@@ -87,10 +77,5 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'open-regular',
-  },
-  headerTitle: {
-    fontFamily: 'open-bold',
-    fontSize: 20,
-    color: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
   },
 })
