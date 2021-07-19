@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import { Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
@@ -11,6 +12,9 @@ import { Ionicons } from '@expo/vector-icons'
 import { MainScreen } from '../screens/MainScreen'
 import { PostScreen } from '../screens/PostScreen'
 import { BookedScreen } from '../screens/BookedScreen'
+import { AboutScreen } from '../screens/AboutScreen'
+import { CreateScreen } from '../screens/CreateScreen'
+
 import { THEME } from '../theme'
 
 // https://reactnavigation.org/docs/hello-react-navigation
@@ -83,8 +87,8 @@ const BookedBottomTab =
     ? createMaterialBottomTabNavigator()
     : createBottomTabNavigator()
 
-export const AppNavigation = props => (
-  <NavigationContainer>
+const BookedBottomScreen = ({ navigation }) => {
+  return (
     <BookedBottomTab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
@@ -125,5 +129,17 @@ export const AppNavigation = props => (
         }}
       />
     </BookedBottomTab.Navigator>
+  )
+}
+
+const MainDrawer = createDrawerNavigator()
+
+export const AppNavigation = () => (
+  <NavigationContainer>
+    <MainDrawer.Navigator>
+      <MainDrawer.Screen name='PostTabs' component={BookedBottomScreen} />
+      <MainDrawer.Screen name='About' component={AboutScreen} />
+      <MainDrawer.Screen name='Create' component={CreateScreen} />
+    </MainDrawer.Navigator>
   </NavigationContainer>
 )

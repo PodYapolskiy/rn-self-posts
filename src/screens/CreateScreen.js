@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 
-export const CreateScreen = ({}) => {
+export const CreateScreen = ({ navigation }) => {
   return (
     <View style={styles.center}>
       <Text>CreateScreen</Text>
