@@ -87,7 +87,7 @@ const BookedBottomTab =
     ? createMaterialBottomTabNavigator()
     : createBottomTabNavigator()
 
-const BookedBottomScreen = ({ navigation }) => {
+const BookedBottomTabScreen = ({ navigation }) => {
   return (
     <BookedBottomTab.Navigator
       screenOptions={({ route }) => ({
@@ -113,7 +113,7 @@ const BookedBottomScreen = ({ navigation }) => {
       }}
     >
       <BookedBottomTab.Screen
-        name='Post'
+        name='PostStack'
         component={PostStackScreen}
         options={{
           title: 'Мой блог',
@@ -121,7 +121,7 @@ const BookedBottomScreen = ({ navigation }) => {
         }}
       />
       <BookedBottomTab.Screen
-        name='Booked'
+        name='BookedStack'
         component={BookedStackScreen}
         options={{
           title: 'Мой блог',
@@ -132,14 +132,49 @@ const BookedBottomScreen = ({ navigation }) => {
   )
 }
 
+const AboutStack = createStackNavigator()
+
+const AboutStackScreen = ({ navigation }) => {
+  return (
+    <AboutStack.Navigator screenOptions={screenOptions}>
+      <AboutStack.Screen
+        name='About'
+        component={AboutScreen}
+        options={{
+          title: 'О приложении',
+        }}
+      />
+    </AboutStack.Navigator>
+  )
+}
+
+const CreateStack = createStackNavigator()
+
+const CreateStackScreen = ({ navigation }) => {
+  return (
+    <CreateStack.Navigator screenOptions={screenOptions}>
+      <CreateStack.Screen
+        name='Create'
+        component={CreateScreen}
+        options={{
+          title: 'Создать пост',
+        }}
+      />
+    </CreateStack.Navigator>
+  )
+}
+
 const MainDrawer = createDrawerNavigator()
 
 export const AppNavigation = () => (
   <NavigationContainer>
     <MainDrawer.Navigator>
-      <MainDrawer.Screen name='PostTabs' component={BookedBottomScreen} />
-      <MainDrawer.Screen name='About' component={AboutScreen} />
-      <MainDrawer.Screen name='Create' component={CreateScreen} />
+      <MainDrawer.Screen
+        name='BookedBottomTab'
+        component={BookedBottomTabScreen}
+      />
+      <MainDrawer.Screen name='AboutStack' component={AboutStackScreen} />
+      <MainDrawer.Screen name='CreateStack' component={CreateStackScreen} />
     </MainDrawer.Navigator>
   </NavigationContainer>
 )
