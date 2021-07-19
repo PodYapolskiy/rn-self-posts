@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from 'react'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { useSelector } from 'react-redux'
 
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { PostList } from '../components/PostList'
-import { DATA } from '../data'
 
 export const BookedScreen = ({ navigation }) => {
   const openPostHandler = post => {
@@ -14,6 +14,8 @@ export const BookedScreen = ({ navigation }) => {
       booked: post.booked, // Передаём сразу же, чтобы избежать то, что будет при useEffect()
     })
   }
+
+  const bookedPosts = useSelector(state => state.post.bookedPosts)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -29,7 +31,5 @@ export const BookedScreen = ({ navigation }) => {
     })
   })
 
-  const data = DATA.filter(post => post.booked)
-
-  return <PostList data={data} onOpen={openPostHandler} />
+  return <PostList data={bookedPosts} onOpen={openPostHandler} />
 }
