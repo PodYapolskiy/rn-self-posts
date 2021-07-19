@@ -168,13 +168,39 @@ const MainDrawer = createDrawerNavigator()
 
 export const AppNavigation = () => (
   <NavigationContainer>
-    <MainDrawer.Navigator>
+    <MainDrawer.Navigator
+      drawerStyle={{
+        width: '60%',
+      }}
+      drawerContentOptions={{
+        activeTintColor: THEME.MAIN_COLOR,
+        labelStyle: {
+          fontFamily: 'open-bold',
+        },
+      }}
+    >
       <MainDrawer.Screen
         name='BookedBottomTab'
         component={BookedBottomTabScreen}
+        options={{
+          drawerLabel: 'Главная',
+          // drawerIcon: () => <Ionicons name='ios-star'/>
+        }}
       />
-      <MainDrawer.Screen name='AboutStack' component={AboutStackScreen} />
-      <MainDrawer.Screen name='CreateStack' component={CreateStackScreen} />
+      <MainDrawer.Screen
+        name='AboutStack'
+        component={AboutStackScreen}
+        options={{
+          drawerLabel: 'О приложении',
+        }}
+      />
+      <MainDrawer.Screen
+        name='CreateStack'
+        component={CreateStackScreen}
+        options={{
+          drawerLabel: 'Новый пост',
+        }}
+      />
     </MainDrawer.Navigator>
   </NavigationContainer>
 )
