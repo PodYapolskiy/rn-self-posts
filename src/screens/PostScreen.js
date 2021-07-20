@@ -13,12 +13,17 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { DATA } from '../data'
-import { toggleBooked } from '../store/actions/post'
+import { removePost, toggleBooked } from '../store/actions/post'
 import { THEME } from '../theme'
 
 export const PostScreen = ({ navigation, route }) => {
   const { postId, date } = route.params
-  const post = DATA.find(p => p.id === postId) // Ищем нужный пост
+  // Ищем нужный пост
+  const post = useSelector(state =>
+    state.post.allPosts.find(p => p.id === postId)
+  )
+
+  const dispatch = useDispatch()
 
   const removeHandler = () => {
     Alert.alert(
@@ -31,7 +36,11 @@ export const PostScreen = ({ navigation, route }) => {
         },
         {
           text: 'Удалить',
-          onPress: () => Alert.alert('Cancel Pressed'),
+          onPress() {
+            // onPress: () => {
+            navigation.navigate('Main')
+            dispatch(removePost(postId))
+          },
           style: 'destructive',
         },
       ],
@@ -49,8 +58,6 @@ export const PostScreen = ({ navigation, route }) => {
     navigation.setOptions({ iconName }) // Устанавливаем новое значение iconName при изменении booked
   }, [booked]) // Зависит только от booked
 
-  const dispatch = useDispatch()
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -67,6 +74,11 @@ export const PostScreen = ({ navigation, route }) => {
       ),
     })
   }, [booked]) // Также зависит только от booked и будет применяться при изменении этой переменной
+
+  // Если пост удалён. Использовать иожно только после всех хуков
+  if (!post) {
+    return null
+  }
 
   return (
     <ScrollView>
