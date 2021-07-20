@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -9,14 +9,15 @@ import {
   Alert,
 } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { DATA } from '../data'
+import { toggleBooked } from '../store/actions/post'
 import { THEME } from '../theme'
 
 export const PostScreen = ({ navigation, route }) => {
-  const { postId, date, booked } = route.params
-  const iconName = booked ? 'ios-star' : 'ios-star-outline'
+  const { postId, date } = route.params
   const post = DATA.find(p => p.id === postId) // Ищем нужный пост
 
   const removeHandler = () => {
@@ -38,6 +39,18 @@ export const PostScreen = ({ navigation, route }) => {
     )
   }
 
+  // Определяем значение booked
+  const booked = useSelector(state =>
+    state.post.bookedPosts.some(post => post.id === postId)
+  )
+
+  const iconName = booked ? 'ios-star' : 'ios-star-outline'
+  useEffect(() => {
+    navigation.setOptions({ iconName }) // Устанавливаем новое значение iconName при изменении booked
+  }, [booked]) // Зависит только от booked
+
+  const dispatch = useDispatch()
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -45,12 +58,15 @@ export const PostScreen = ({ navigation, route }) => {
           <Item
             title='Take'
             iconName={iconName}
-            onPress={() => console.log('Take')}
+            onPress={() => {
+              console.log(postId)
+              dispatch(toggleBooked(postId))
+            }}
           />
         </HeaderButtons>
       ),
     })
-  })
+  }, [booked]) // Также зависит только от booked и будет применяться при изменении этой переменной
 
   return (
     <ScrollView>

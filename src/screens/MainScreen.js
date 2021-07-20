@@ -19,7 +19,7 @@ export const MainScreen = ({ navigation }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-     dispatch(loadPosts())
+    dispatch(loadPosts())
   }, [dispatch])
 
   useLayoutEffect(() => {
@@ -38,12 +38,12 @@ export const MainScreen = ({ navigation }) => {
           <Item
             title='Take photo'
             iconName='ios-camera'
-            onPress={() => navigation.navigate('Create')}
+            onPress={() => navigation.navigate('CreateStack')} // С Create не работает
           />
         </HeaderButtons>
       ),
     })
-  })
+  }, [])
 
   const allPosts = useSelector(state => state.post.allPosts)
 
