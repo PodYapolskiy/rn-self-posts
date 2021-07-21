@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addPost } from '../store/actions/post'
+import { PhotoPicker } from '../components/PhotoPicker'
 import { THEME } from '../theme'
 
 export const CreateScreen = ({ navigation }) => {
@@ -61,12 +62,13 @@ export const CreateScreen = ({ navigation }) => {
             onChangeText={setText}
             multiline
           />
-          <Image
+          <PhotoPicker />
+          {/* <Image
             style={{ width: '100%', height: 200, marginBottom: 10 }}
             source={{
               uri: 'https://static.coindesk.com/wp-content/uploads/2019/01/shutterstock_1012724596-860x430.jpg',
             }}
-          />
+          /> */}
           <Button
             title='Создать пост'
             color={THEME.MAIN_COLOR}
