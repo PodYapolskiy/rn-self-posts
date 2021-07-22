@@ -32,7 +32,8 @@
     "react-native-web": "~0.13.12",
     "react-navigation-header-buttons": "^7.0.2",
     "react-redux": "^7.2.4",
-    "redux": "^4.1.0"
+    "redux": "^4.1.0",
+    "expo-sqlite": "~9.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6"

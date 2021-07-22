@@ -12,7 +12,6 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import { DATA } from '../data'
 import { removePost, toggleBooked } from '../store/actions/post'
 import { THEME } from '../theme'
 
