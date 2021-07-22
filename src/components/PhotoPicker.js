@@ -4,9 +4,8 @@ import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
 
 const askForPermissions = async () => {
-  await MediaLibrary.requestPermissionsAsync()
   // https://docs.expo.io/versions/v39.0.0/sdk/permissions/#permissionresponse
-  const { granted } = await MediaLibrary.getPermissionsAsync()
+  const { granted } = await MediaLibrary.requestPermissionsAsync()
   // Вроде бы только для IOS
   // const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync()
 
@@ -19,14 +18,13 @@ const askForPermissions = async () => {
   }
 }
 
-export const PhotoPicker = () => {
+export const PhotoPicker = ({ onPick }) => {
   const [image, setImage] = useState(null)
 
   const takePhoto = async () => {
     const hasPermission = await askForPermissions()
 
     if (!hasPermission) {
-      console.log('Всё не заебок')
       return
     }
 
@@ -37,6 +35,8 @@ export const PhotoPicker = () => {
     })
 
     console.log(img)
+    setImage(img.uri)
+    onPick(img.uri) // Каждый раз при выборе будет создаваться новая ссылка
   }
 
   return (

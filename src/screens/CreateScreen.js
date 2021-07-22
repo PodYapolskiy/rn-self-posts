@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -21,15 +21,13 @@ import { THEME } from '../theme'
 export const CreateScreen = ({ navigation }) => {
   const [text, setText] = useState('')
   const dispatch = useDispatch()
-
-  const img =
-    'https://static.coindesk.com/wp-content/uploads/2019/01/shutterstock_1012724596-860x430.jpg'
+  const imgRef = useRef() // При изменении не будет ререндериться компонент
 
   const saveHandler = () => {
     const post = {
       date: new Date().toJSON(),
       text,
-      img,
+      img: imgRef.current,
       booked: false,
     }
     dispatch(addPost(post))
@@ -50,6 +48,10 @@ export const CreateScreen = ({ navigation }) => {
     })
   }, []) // Нет зависимостей, поэтому сработает только при рендере компонента
 
+  const photoPickHandler = uri => {
+    imgRef.current = uri
+  }
+
   return (
     <ScrollView>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -62,7 +64,7 @@ export const CreateScreen = ({ navigation }) => {
             onChangeText={setText}
             multiline
           />
-          <PhotoPicker />
+          <PhotoPicker onPick={photoPickHandler} />
           {/* <Image
             style={{ width: '100%', height: 200, marginBottom: 10 }}
             source={{
@@ -73,6 +75,7 @@ export const CreateScreen = ({ navigation }) => {
             title='Создать пост'
             color={THEME.MAIN_COLOR}
             onPress={saveHandler}
+            disabled={!text} // Будет заблокирована, если что-то не заполнено
           />
         </View>
       </TouchableWithoutFeedback>
