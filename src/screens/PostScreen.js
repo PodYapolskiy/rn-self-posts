@@ -66,7 +66,7 @@ export const PostScreen = ({ navigation, route }) => {
             iconName={iconName}
             onPress={() => {
               console.log(postId)
-              dispatch(toggleBooked(postId))
+              dispatch(toggleBooked(post))
             }}
           />
         </HeaderButtons>
