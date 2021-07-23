@@ -3,6 +3,7 @@ import { ADD_POST, LOAD_POSTS, REMOVE_POST, TOGGLE_BOOKED } from '../types'
 const initialState = {
   allPosts: [],
   bookedPosts: [],
+  loading: true,
 }
 
 export const postReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         allPosts: action.payload,
         bookedPosts: action.payload.filter(post => post.booked),
+        loading: false,
       }
     case TOGGLE_BOOKED: // Добавить или удалить какой-то пост в избранное
       // Создаём новую переменную, в которой лежит изменённый массив allPosts
