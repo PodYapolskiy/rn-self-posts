@@ -8,7 +8,7 @@ Second project to practise react native. New issues mentioned:
 - SQLite
 - Permissions API
 
-![gif](https://media.giphy.com/media/MCZzVXSgw83BmKfut5/giphy.gif)
+![gif](https://media.giphy.com/media/MCZzVXSgw83BmKfut5/giphy-downsized-large.gif)
 
 ## Usage
 
